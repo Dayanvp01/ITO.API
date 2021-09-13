@@ -1,0 +1,26 @@
+CREATE DATABASE ITO_TEST
+
+USE ITO_TEST
+
+CREATE TABLE [Dependencia] (
+    [Id] uniqueidentifier DEFAULT (newid()),
+    [Nombre] nvarchar(100) NOT NULL,
+    [Codigo] nvarchar(10) NOT NULL,
+    [Activo] bit NOT NULL DEFAULT CAST(1 AS bit),
+    CONSTRAINT [PK_Dependencia] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [Empleados] (
+    [Id] uniqueidentifier DEFAULT (newid()),
+    [DependenciaId] uniqueidentifier NOT NULL,
+    [Nombres] nvarchar(100) NOT NULL,
+    [Apellidos] nvarchar(100) NOT NULL,
+    [Activo] bit NOT NULL DEFAULT CAST(1 AS bit),
+    CONSTRAINT [PK_Empleado] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_Empleado_Dependencia] FOREIGN KEY ([DependenciaId]) REFERENCES [Dependencia] ([Id]) ON DELETE NO ACTION
+);
+GO
+
+CREATE INDEX [IX_Empleado_DependenciaId] ON [Empleado] ([DependenciaId]);
+GO
